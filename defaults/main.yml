@@ -8,3 +8,6 @@
 dest_dir: /Applications
 app_dir: "{{ dest_dir }}/Emacs.app"
 emacs_bin: "{{ app_dir }}/Contents/MacOS/Emacs"
+
+# Set to yes if we need to sudo
+need_become: no

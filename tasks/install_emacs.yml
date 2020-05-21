@@ -43,8 +43,10 @@
       - "{{ dmg_dl.dest }}"
   notify: emacsformacosx unmount dmg
 
+# XXX - This fails in check mode because the src path doesn't actually
+# exist.
 - name: Install the application
-  become: yes
+  become: "{{ need_become }}"
   copy:
     src: "{{ tmpdir.path }}/Emacs/Emacs.app"
     remote_src: yes
