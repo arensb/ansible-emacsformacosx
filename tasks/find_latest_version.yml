@@ -1,0 +1,6 @@
+# XXX - Ask emacsformacosx.org what the latest version is.
+---
+
+- debug: msg="I don't know how to check the latest version yet."
+
+# XXX - Set a variable or fact to say which version ought to be installed.

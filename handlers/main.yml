@@ -1,0 +1,18 @@
+---
+# handlers file for roles/emacsformacosx
+
+# Conceptually, these are really post-tasks.
+- name: Unmount DMG
+  listen: emacsformacosx delete temp
+  command:
+    argv:
+      - hdiutil
+      - detach
+      - "{{ tmpdir.path }}/Emacs"
+
+- name: Clean up temporary directory
+  listen: emacsformacosx unmount dmg
+  file:
+    path: "{{ tmpdir.path }}"
+    state: absent
+

@@ -1,0 +1,47 @@
+- name: Create temporary directory
+  tempfile:
+    state: directory
+    suffix: emacsformacosx
+  register: tmpdir
+  notify: emacsformacosx delete temp
+
+- name: Create mountpoint
+  file:
+    path: "{{ tmpdir.path }}/Emacs"
+    state: directory
+    mode: 0755
+  notify: emacsformacosx delete temp
+
+- name: Download DMG
+  get_url:
+    # dest: "Emacs-{{ version }}-universal.dmg"
+    dest: "{{ tmpdir.path }}"
+    url: "https://emacsformacosx.com/emacs-builds/Emacs-{{ version }}-universal.dmg"
+  register: dmg_dl
+  notify: emacsformacosx delete temp
+  # XXX - Debugging:
+  when:
+    - no
+
+- name: Mount DMG
+  command:
+    argv:
+      - hdiutil
+      - attach
+      - -mount
+      - required
+      - -mountpoint
+      - "{{ tmpdir.path }}/Emacs"
+      # XXX - Debugging
+      - "/tmp/Emacs-26.3-universal.dmg"
+  notify: emacsformacosx unmount dmg
+
+- name: Install the application
+  # become: yes
+  copy:
+    src: "{{ tmpdir.path }}/Emacs/Emacs.app"
+    remote_src: yes
+    # XXX - Destination
+    dest: /tmp/Applications/
+    # Overwrite the existing application, if any.
+    force: yes

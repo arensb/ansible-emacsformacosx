@@ -1,0 +1,57 @@
+---
+# tasks file for roles/emacsformacosx
+
+# XXX - Check whether an update is even needed
+#- name: Get current Emacs version
+  # emacs --batch --execute '(princ (format "%d.%d" emacs-major-version emacs-minor-version))'
+- name: Get the currently-installed version
+  check_mode: no
+  changed_when: no
+  command:
+    argv:
+      - "{{ emacs_bin }}"
+      - "--batch"
+      - "--execute"
+      - '(princ (format "%d.%d" emacs-major-version emacs-minor-version))'
+  register: current_emacs_version
+
+- name: Get the latest available version
+  include_tasks: find_latest_version.yml
+  when:
+    version == "latest"
+
+# # XXX - Create temporary directory on localhost, to which the image
+# # can be downloaded.
+# # Not yet. With just one or two hosts, can just have each one pull
+# # the image.
+# # At a larger installation, want to have a central host download the
+# # latest version, put it in /Images/ or some such and copy to each
+# # client. Then again, if you have a big installation like that, you
+# # probably have a different software installation infrastructure.
+
+# - name: Create temporary directory
+#   delegate_to: localhost
+#   tempfile:
+#     state: directory
+#     suffix: emacsformacosx
+#   register: tmpdir
+# - debug: msg="{{ tmpdir }}"
+#   delegate_to: localhost
+
+# XXX - Download disk image
+# https://emacsformacosx.com/emacs-builds/Emacs-{version}-universal.dmg
+
+- name: Do the installation
+  include_tasks: install_emacs.yml
+  when:
+    current_emacs_version.stdout is version(version, '!=')
+
+# XXX - Copy the image to the client(s)
+
+# XXX - Mount the image
+# hdiutil attach -mount required \
+# 	-mountpoint /tmp/emacs \
+# 	/path/to/Emacs-{version}-universal.dmg
+
+# XXX - Copy /tmp/emacs/Emacs.app to {destdir}
+# Overwrite destination if necessary

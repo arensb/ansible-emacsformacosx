@@ -1,0 +1,5 @@
+---
+# vars file for roles/emacsformacosx
+
+# Emacs binary
+# emacs_bin: /Applications/Emacs.app/Contents/MacOS/Emacs

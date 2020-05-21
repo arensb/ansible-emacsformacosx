@@ -1,0 +1,10 @@
+---
+# defaults file for roles/emacsformacosx
+
+# dist_url:
+# The URL at which to get the disk image
+# https://emacsformacosx.com/emacs-builds/Emacs-26.3-universal.dmg
+
+dest_dir: /Applications
+app_dir: "{{ dest_dir }}/Emacs.app"
+emacs_bin: "{{ app_dir }}/Contents/MacOS/Emacs"
