@@ -2,7 +2,6 @@
 # included from main.yml when that file determines that yes, we do
 # need to update.
 ---
-
 # Create a temporary directory in which to put the .dmg file and any
 # other temporary files we might create.
 - name: Create temporary directory
@@ -14,13 +13,10 @@
 
 - name: Download DMG
   get_url:
-    # dest: "Emacs-{{ version }}-universal.dmg"
     dest: "{{ tmpdir.path }}"
     url: "https://emacsformacosx.com/emacs-builds/Emacs-{{ version }}-universal.dmg"
   register: dmg_dl
   notify: emacsformacosx delete temp
-
-- debug: var=dmg_dl
 
 # Create a directory to mount the .dmg file.
 - name: Create mountpoint
