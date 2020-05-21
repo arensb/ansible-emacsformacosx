@@ -30,8 +30,8 @@ Including an example of how to use your role (for instance, with variables passe
     - hosts: macs
       roles:
         - role: emacsformacosx
-		  vars:
-		    version: 25.1
+          vars:
+            version: 25.1
 
 License
 -------
