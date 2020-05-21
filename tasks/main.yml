@@ -7,6 +7,7 @@
 - name: Get the currently-installed version
   check_mode: no
   changed_when: no
+  failed_when: no
   command:
     argv:
       - "{{ emacs_bin }}"
@@ -25,5 +26,6 @@
 # other than the desired one.
 - name: Do the installation
   include_tasks: install_emacs.yml
-  when:
+  when: >-
+    current_emacs_version.rc != 0 or
     current_emacs_version.stdout is version(version, '!=')
